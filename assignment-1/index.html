@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSWD Lab - Assignment 1</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            color: #38bdf8;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #94a3b8;
+            font-size: 15px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 14px;
+            padding: 24px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: #38bdf8;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15);
+        }
+
+        .card-content h3 {
+            font-size: 18px;
+            color: #f1f5f9;
+            margin-bottom: 6px;
+        }
+
+        .card-content p {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .badge {
+            background: #0284c7;
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            margin-left: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Full Stack Web Development Lab</h1>
+            <p>Assignment - 1 Solutions</p>
+        </div>
+
+        <div class="card-grid">
+            <a href="q1_student_registration.html" class="card">
+                <div class="card-content">
+                    <h3>Question 1: Student Registration Form Validation</h3>
+                    <p>JavaScript validation for Student ID, Name, Email, Mobile Number, and Password formats.</p>
+                </div>
+                <div class="badge">Open Q1</div>
+            </a>
+
+            <a href="q2_cricket_scoreboard.html" class="card">
+                <div class="card-content">
+                    <h3>Question 2: Live Cricket Match Scoreboard</h3>
+                    <p>HTML & CSS scoreboard with highlighted leading score, team cards, batsmen & bowler tables.</p>
+                </div>
+                <div class="badge">Open Q2</div>
+            </a>
+
+            <a href="q3_factorial_sum.html" class="card">
+                <div class="card-content">
+                    <h3>Question 3: Factorial & Sum of Digits Calculator</h3>
+                    <p>JavaScript functions with prompt() input dialog and alert() output boxes.</p>
+                </div>
+                <div class="badge">Open Q3</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

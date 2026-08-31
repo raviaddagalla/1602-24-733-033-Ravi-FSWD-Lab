@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Cricket Match Scoreboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Teko:wght@700&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #0b1120;
+            color: #f1f5f9;
+            min-height: 100vh;
+            padding: 24px 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .scoreboard-container {
+            width: 100%;
+            max-width: 900px;
+            background: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        .header-bar {
+            background: linear-gradient(90deg, #1e3a8a, #0f172a);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .tournament-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #60a5fa;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .venue-info {
+            font-size: 13px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #ef4444;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .teams-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 24px;
+            background: #131d31;
+        }
+
+        .team-card {
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .team-india {
+            background: #0f172a;
+            border-left: 6px solid #2563eb;
+        }
+
+        .team-aus {
+            background: #0f172a;
+            border-left: 6px solid #eab308;
+        }
+
+        .team-leading {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(15, 23, 42, 0.95));
+            border: 2px solid #38bdf8;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .team-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .team-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .logo-ind {
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
+            color: #ffffff;
+            border: 2px solid #60a5fa;
+        }
+
+        .logo-aus {
+            background: linear-gradient(135deg, #ca8a04, #15803d);
+            color: #ffffff;
+            border: 2px solid #facc15;
+        }
+
+        .team-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+
+        .team-color-tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 3px;
+        }
+
+        .tag-blue {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+
+        .tag-gold {
+            background: rgba(234, 179, 8, 0.2);
+            color: #fde047;
+        }
+
+        .score-box {
+            text-align: right;
+        }
+
+        .standard-score {
+            font-size: 24px;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+
+        .leading-score {
+            font-family: 'Teko', sans-serif;
+            font-size: 44px;
+            font-weight: 700;
+            color: #38bdf8;
+            line-height: 1;
+            letter-spacing: 1px;
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .overs-text {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .match-status-bar {
+            background: #1e293b;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #334155;
+            border-bottom: 1px solid #334155;
+            font-size: 13px;
+        }
+
+        .status-highlight {
+            color: #fbbf24;
+            font-weight: 700;
+        }
+
+        .rates {
+            display: flex;
+            gap: 16px;
+            color: #cbd5e1;
+        }
+
+        .rates span b {
+            color: #ffffff;
+        }
+
+        .current-action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 20px 24px;
+            background: #0f172a;
+        }
+
+        .action-panel {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #334155;
+        }
+
+        .action-panel h4 {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 6px;
+        }
+
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .mini-table th {
+            text-align: right;
+            color: #94a3b8;
+            font-weight: 600;
+            padding-bottom: 6px;
+        }
+
+        .mini-table th:first-child {
+            text-align: left;
+        }
+
+        .mini-table td {
+            padding: 6px 0;
+            text-align: right;
+            color: #f1f5f9;
+        }
+
+        .mini-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .striker-star {
+            color: #fbbf24;
+            font-size: 11px;
+            margin-left: 2px;
+        }
+
+        .scorecard-section {
+            padding: 20px 24px 28px;
+            background: #111827;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .scorecard-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+
+        .scorecard-table th {
+            background: #0f172a;
+            color: #94a3b8;
+            font-weight: 600;
+            padding: 12px 14px;
+            text-align: right;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+
+        .scorecard-table th:nth-child(1),
+        .scorecard-table th:nth-child(2) {
+            text-align: left;
+        }
+
+        .scorecard-table td {
+            padding: 12px 14px;
+            border-top: 1px solid #334155;
+            color: #e2e8f0;
+            text-align: right;
+        }
+
+        .scorecard-table td:nth-child(1),
+        .scorecard-table td:nth-child(2) {
+            text-align: left;
+        }
+
+        .player-name-cell {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .dismissal-text {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .highlight-row {
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        @media (max-width: 700px) {
+            .teams-summary,
+            .current-action-grid {
+                grid-template-columns: 1fr;
+            }
+            .match-status-bar {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="scoreboard-container">
+        <div class="header-bar">
+            <div>
+                <div class="tournament-title">ICC Men's T20 World Cup 2026 - Final</div>
+                <div class="venue-info">Narendra Modi Stadium, Ahmedabad</div>
+            </div>
+            <div class="live-badge">
+                <span class="pulse-dot"></span> LIVE
+            </div>
+        </div>
+
+        <div class="teams-summary">
+            <div class="team-card team-aus">
+                <div class="team-info">
+                    <div class="team-logo logo-aus">AUS</div>
+                    <div>
+                        <div class="team-name">Australia</div>
+                        <span class="team-color-tag tag-gold">Gold & Green</span>
+                    </div>
+                </div>
+                <div class="score-box">
+                    <div class="standard-score">184/7</div>
+                    <div class="overs-text">20.0 Overs</div>
+                </div>
+            </div>
+
+            <div class="team-card team-india team-leading">
+                <div class="team-info">
+                    <div class="team-logo logo-ind">IND</div>
+                    <div>
+                        <div class="team-name">India</div>
+                        <span class="team-color-tag tag-blue">Royal Blue</span>
+                    </div>
+                </div>
+                <div class="score-box">
+                    <div class="leading-score">161/3</div>
+                    <div class="overs-text">17.0 Overs</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="match-status-bar">
+            <div class="status-highlight">India need 24 runs in 18 balls to win</div>
+            <div class="rates">
+                <span>CRR: <b>9.47</b></span>
+                <span>RRR: <b>8.00</b></span>
+            </div>
+        </div>
+
+        <div class="current-action-grid">
+            <div class="action-panel">
+                <h4>Current Batsmen</h4>
+                <table class="mini-table">
+                    <thead>
+                        <tr>
+                            <th>Batter</th>
+                            <th>R</th>
+                            <th>B</th>
+                            <th>4s</th>
+                            <th>6s</th>
+                            <th>SR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Virat Kohli <span class="striker-star">*</span></td>
+                            <td>68</td>
+                            <td>42</td>
+                            <td>6</td>
+                            <td>2</td>
+                            <td>161.9</td>
+                        </tr>
+                        <tr>
+                            <td>Hardik Pandya</td>
+                            <td>22</td>
+                            <td>11</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>200.0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="action-panel">
+                <h4>Bowler Details</h4>
+                <table class="mini-table">
+                    <thead>
+                        <tr>
+                            <th>Bowler</th>
+                            <th>O</th>
+                            <th>M</th>
+                            <th>R</th>
+                            <th>W</th>
+                            <th>ECON</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mitchell Starc <span class="striker-star">*</span></td>
+                            <td>3.0</td>
+                            <td>0</td>
+                            <td>28</td>
+                            <td>1</td>
+                            <td>9.33</td>
+                        </tr>
+                        <tr>
+                            <td>Pat Cummins</td>
+                            <td>4.0</td>
+                            <td>0</td>
+                            <td>34</td>
+                            <td>1</td>
+                            <td>8.50</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="scorecard-section">
+            <div class="section-title">
+                <span>Batting Scorecard (India - Top 5)</span>
+                <span style="font-size: 12px; color: #94a3b8; font-weight: normal;">Target: 185</span>
+            </div>
+            <table class="scorecard-table">
+                <thead>
+                    <tr>
+                        <th>Batsman</th>
+                        <th>Dismissal</th>
+                        <th>Runs</th>
+                        <th>Balls</th>
+                        <th>4s</th>
+                        <th>6s</th>
+                        <th>SR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="player-name-cell">Rohit Sharma (c)</td>
+                        <td class="dismissal-text">c Head b Starc</td>
+                        <td>45</td>
+                        <td>24</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td>187.5</td>
+                    </tr>
+                    <tr>
+                        <td class="player-name-cell">Yashasvi Jaiswal</td>
+                        <td class="dismissal-text">b Zampa</td>
+                        <td>18</td>
+                        <td>12</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>150.0</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td class="player-name-cell">Virat Kohli</td>
+                        <td class="dismissal-text" style="color: #60a5fa; font-weight: 600;">not out *</td>
+                        <td>68</td>
+                        <td>42</td>
+                        <td>6</td>
+                        <td>2</td>
+                        <td>161.9</td>
+                    </tr>
+                    <tr>
+                        <td class="player-name-cell">Suryakumar Yadav</td>
+                        <td class="dismissal-text">c Maxwell b Cummins</td>
+                        <td>8</td>
+                        <td>6</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>133.3</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td class="player-name-cell">Hardik Pandya</td>
+                        <td class="dismissal-text" style="color: #60a5fa; font-weight: 600;">not out</td>
+                        <td>22</td>
+                        <td>11</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>200.0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

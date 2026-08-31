@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factorial and Sum of Digits Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #f8fafc;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+            color: #38bdf8;
+        }
+
+        p {
+            color: #94a3b8;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #38bdf8, #2563eb);
+            color: #ffffff;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+        }
+
+        .result-container {
+            margin-top: 28px;
+            padding: 20px;
+            background: #0f172a;
+            border-radius: 12px;
+            border: 1px solid #334155;
+            text-align: left;
+            display: none;
+        }
+
+        .result-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #1e293b;
+            font-size: 14px;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #94a3b8;
+        }
+
+        .result-value {
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Factorial & Sum of Digits</h2>
+        <p>Click the button below to prompt for a positive integer and calculate its factorial and sum of digits using pop-up dialogs.</p>
+        
+        <button onclick="calculate()">Enter Number</button>
+
+        <div class="result-container" id="resultBox">
+            <div class="result-title">Last Computed Output</div>
+            <div class="result-item">
+                <span class="result-label">Entered Integer (n):</span>
+                <span class="result-value" id="displayN">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Factorial (n!):</span>
+                <span class="result-value" id="displayFact">-</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Sum of Digits:</span>
+                <span class="result-value" id="displaySum">-</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getFactorial(num) {
+            let fact = 1n;
+            for (let i = 1n; i <= BigInt(num); i++) {
+                fact *= i;
+            }
+            return fact.toString();
+        }
+
+        function getSumOfDigits(num) {
+            let str = num.toString();
+            let sum = 0;
+            for (let i = 0; i < str.length; i++) {
+                sum += parseInt(str[i], 10);
+            }
+            return sum;
+        }
+
+        function calculate() {
+            let input = prompt("Enter a positive integer (n):");
+
+            if (input === null) {
+                return;
+            }
+
+            let trimmed = input.trim();
+            if (trimmed === "" || isNaN(trimmed) || !Number.isInteger(Number(trimmed)) || Number(trimmed) <= 0) {
+                alert("Invalid input! Please enter a valid positive integer.");
+                return;
+            }
+
+            let n = parseInt(trimmed, 10);
+            let factorialResult = getFactorial(n);
+            let sumResult = getSumOfDigits(n);
+
+            alert("Input: " + n + "\n\nFactorial of " + n + " (" + n + "!) = " + factorialResult + "\nSum of Digits = " + sumResult);
+
+            document.getElementById('displayN').textContent = n;
+            document.getElementById('displayFact').textContent = factorialResult;
+            document.getElementById('displaySum').textContent = sumResult;
+            document.getElementById('resultBox').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
